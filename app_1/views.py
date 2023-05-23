@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.db.models import Q
 from .models import Plant
 from .vector import model
 
@@ -13,9 +14,12 @@ def find(request, value):
     
     if is_ajax and request.method == 'GET':
 
-        value = value.upper()
-        query = Plant.objects.filter(name__contains=value).values('name', 'FO', 'ground', 'chem', 'drugs')
         result = []
+        value = value.upper()
+
+        query = Plant.objects.filter(
+            Q(name__contains=value) | Q(FO__contains=value)
+        ).values('name', 'FO', 'ground', 'chem', 'drugs')
 
         for item in query:
             result.append(item)
@@ -28,10 +32,7 @@ def find(request, value):
     return JsonResponse({'status': False})
 
 
-
-
-
-def learning(request, value):
+def predict(request, value):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     
     if is_ajax and request.method == 'GET':
@@ -49,10 +50,6 @@ def learning(request, value):
     return JsonResponse({'status': False})
 
 
-
-
-
-
 def options_to_input(request, value):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     
@@ -63,7 +60,7 @@ def options_to_input(request, value):
         result = list(Plant.objects.filter(name__contains=value).values_list('name', flat=True))
         res = list(Plant.objects.filter(FO__icontains=value).values_list('FO', flat=True))
 
-        result += res
+        result.extend(res)
 
         if result:
             return JsonResponse({

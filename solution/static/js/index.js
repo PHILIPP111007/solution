@@ -1,22 +1,21 @@
 const findDiv = document.getElementById("findDiv");
 const selectDiv = document.getElementById("selectDiv");
+const vectorDiv = document.getElementById("vectorDiv");
 let findForm = document.getElementById("findForm");
 let findInput = document.getElementById("findInput");
-const vectorDiv = document.getElementById("vectorDiv");
 let optionsDiv = document.querySelector('.options');
 let fo = [];
 
 
-function vectorFuns(vectorDiv) {
+// AJAX predict
+function predictFunc(vectorDiv) {
 	vectorDiv.addEventListener("submit", event => {
         event.preventDefault();
 
-        let vec1 = document.getElementById('vector1').value;
-        let vec2 = document.getElementById('vector2').value;
-        let vec3 = document.getElementById('vector3').value;
-
-		let val = vec1 + '_' + vec2 + ' ' + vec3;
-
+        const vec1 = document.getElementById('vector1').value;
+        const vec2 = document.getElementById('vector2').value;
+        const vec3 = document.getElementById('vector3').value;
+		const val = vec1 + '_' + vec2 + ' ' + vec3;
 
 		if (val) {
 			const url = `learning/${val}`
@@ -29,23 +28,21 @@ function vectorFuns(vectorDiv) {
 			})
 			.then(response => response.json())
 			.then(data => {
+
+                const res = document.getElementById('res');
+                if (res) {
+                    res.remove();
+                }
                 
                 if (data.status) {
-                    
-                    a = document.getElementById('res');
-                    if (a) {
-                        a.remove();
-                    }
-                    vectorDiv.innerHTML += `<h4 id="res">Вероятность произрастания: ${data.body}</h4>`;
-
+                    vectorDiv.innerHTML += `<h4 id="res">Вероятность произрастания: ${data.body}%</h4>`;
                 } else {
-                    vectorDiv.innerHTML += `<h4 id="res">Вероятность произрастания: 0</h4>`;
+                    vectorDiv.innerHTML += `<h4 id="res">Вероятность произрастания: 0%</h4>`;
                 }
             })
         }
     })
 };
-
 
 
 function removeOptions() {
@@ -55,6 +52,7 @@ function removeOptions() {
 }
 
 
+// AJAX
 function optionsToInput() {
 
         removeOptions();
@@ -77,8 +75,6 @@ function optionsToInput() {
                     findDiv.innerHTML += '<div class="options"></div>';
                     optionsDiv = document.querySelector('.options');
 
-                    console.log(optionsDiv)
-
                     for (let i = 0; i < data.body.length; i++) {
                         optionsDiv.innerHTML += `<p onclick="addToInput('${data.body[i]}')">${data.body[i]}</p>`;
                     }
@@ -87,7 +83,6 @@ function optionsToInput() {
 				    findInput.value = val;
 				    findInput.focus();
 				    findInput.addEventListener("input", optionsToInput);
-                    // findInput.addEventListener("submit", find);
                     findForm = document.querySelector("#findForm");
                     find(findForm);
                 }
@@ -96,13 +91,11 @@ function optionsToInput() {
 };
 
 
-
 function addToInput(value) {
     let findInput_1 = document.querySelector("#findInput");
     findInput_1.value = value;
     removeOptions();
 }
-
 
 
 // AJAX find
@@ -187,7 +180,7 @@ function find(form) {
 
 function selectFunc(value) {
 
-    let items = document.getElementsByClassName('item');
+    const items = document.getElementsByClassName('item');
 
     if (value === 'все округа') {
         for (let i = 0; i < items.length; i++) {
@@ -195,9 +188,9 @@ function selectFunc(value) {
         }   
     } else {
         for (let i = 0; i < items.length; i++) {
-            let f = items[i].getElementsByClassName('rightColumn')[0].firstElementChild.textContent;
+            let item = items[i].getElementsByClassName('rightColumn')[0].firstElementChild.textContent;
 
-            if (f.includes(value)) {
+            if (item.includes(value)) {
                 items[i].style.display = '';
             } else {
                 items[i].style.display = 'none';
@@ -208,4 +201,4 @@ function selectFunc(value) {
 
 findInput.addEventListener("input", optionsToInput);
 find(findForm);
-vectorFuns(vectorDiv);
+predictFunc(vectorDiv);
