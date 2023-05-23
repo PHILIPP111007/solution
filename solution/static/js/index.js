@@ -18,7 +18,7 @@ function predictFunc(vectorDiv) {
 		const val = vec1 + '_' + vec2 + ' ' + vec3;
 
 		if (val) {
-			const url = `learning/${val}`
+			const url = `predict/${val}`
 			fetch(url, {
 				method: 'GET',
 				credentials: "same-origin",
