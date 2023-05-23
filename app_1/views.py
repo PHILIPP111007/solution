@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.db.models import Q
 from .models import Plant
-from .vector import model
+from .predict import model
 
 
 def index(request):
