@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html>
+<head>
+    <meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+	<link rel="stylesheet" href='{% static "css/index.css" %}'>
+
+
+    <style>
+        body {
+            font-family: 'Calibri', sans-serif;
+            background-color: rgb(235, 239, 234);
+        }
+        input[type="submit"] {
+            all: unset;
+            cursor: pointer;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            outline: none;
+            -webkit-transition: all 0.3s;
+            -moz-transition: all 0.3s;
+            transition: all 0.3s;
+        }
+        input[type="submit"]:after {
+            position: relative;
+            z-index: -1;
+            -webkit-transition: all 0.3s;
+            -moz-transition: all 0.3s;
+            transition: all 0.3s;
+        }
+        input[type="submit"]:hover {
+            position: relative;
+        }
+        input[type="submit"]:active {
+            position: relative;
+            top: 2px;
+        }
+
+
+        #findDiv {
+            display: flex;
+            margin-left: calc(50% - 230px);
+            margin-bottom: 30px;
+            padding: 10px;
+        }
+        #findInput {
+            border: none;
+            border-radius: 5px 0px 0px 5px;
+            width: 350px;
+            font-size: medium;
+            padding: 10px;
+        }
+        #findButton {
+            background: rgb(198, 198, 198);
+            border-radius: 0px 5px 5px 0px;
+            padding: 10px;
+        }
+
+        .options {
+            position: absolute;
+            top: 200px;
+            width: 366px;
+            background: white;
+            border: 1px solid gray;
+        }
+        .options p {
+            padding: 10px;
+            word-wrap: break-word;
+        }
+        .options p:hover {
+            background-color: gray;
+        }
+
+        #loading {
+            color: gray;
+            margin-left: calc(50% - 100px);
+        }
+
+        #selectLabel {
+            color: gray;
+        }
+        #select {
+            border: none;
+            padding: 5px;
+        }
+
+
+        .item {
+            display: flex;
+            min-height: 100px;
+            max-width: 930px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 10px;
+            word-wrap: break-word;
+        }
+
+        .leftColumn {
+            padding: 10px;
+            width: 300px;
+            border-right: 2px solid rgb(235, 239, 234);
+        }
+        .rightColumn {
+            padding: 20px;
+            min-width: 300px;
+            max-width: 600px;
+        }
+
+        #bottom-div {
+            padding-top: 100px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main">
+
+        <div id="bottom-div" onclick="removeOptions()"></div>
+
+
+        <div id="vectorDiv">
+            <form id="vector" method="GET" action="">
+                <input id="vector1" type="text" placeholder="Название растения">
+                <input id="vector2" type="text" placeholder="Федеральный округ">
+                <input id="vector3" type="text" placeholder="Тип почвы">
+                <input id="findButton" type="submit" value="Найти">
+            </form>
+        </div>
+
+
+        <div id="findDiv">
+            <form id="findForm" method="GET" action="">
+                <input id="findInput" type="text" placeholder="Название растения / Регион">
+                <input id="findButton" type="submit" value="Найти">
+            </form>
+        </div>
+        
+        <div id="selectDiv" onclick="removeOptions()"></div>
+
+        <div id="result" onclick="removeOptions()"></div>
+
+
+    </div>
+
+    <div id="bottom-div" onclick="removeOptions()"></div>
+
+	<script src="{% static 'js/index.js' %}" type="text/javascript" charset="utf-8" async defer></script>
+</body>
+</html>
