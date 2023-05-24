@@ -56,10 +56,8 @@ def options_to_input(request, value):
     if is_ajax and request.method == 'GET':
 
         value = value.upper()
-
         result = list(Plant.objects.filter(name__contains=value).values_list('name', flat=True))
         res = list(Plant.objects.filter(FO__icontains=value).values_list('FO', flat=True))
-
         result.extend(res)
 
         if result:
